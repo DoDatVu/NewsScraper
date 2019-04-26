@@ -1,13 +1,13 @@
-// var mongoose = require ("mongoose");
+var mongoose = require ("mongoose");
 
-// var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-// varNoteSchema = new Schema({
-// title:String,
-// body:String
+varNoteSchema = new Schema({
+title:String,
+body:String
 
-// });
+});
 
-// var Note = mongoose.model("Note", varNoteSchema);
+var Note = mongoose.model("Note", varNoteSchema);
 
-// module.exports = Note;
+module.exports = Note;
