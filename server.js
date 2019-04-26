@@ -1,5 +1,5 @@
 var express = require ("express");
-// var mongojs = require ("mongojs");
+var mongojs = require ("mongojs");
 var mongoose = require ("mongoose");
 var cheerio = require ("cheerio");
 var axios = require ("axios");
@@ -10,7 +10,7 @@ mongoose.connect(MONGODB_URI);
 
 // models
 var db = require("./models");
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
