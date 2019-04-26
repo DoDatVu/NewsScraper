@@ -1,5 +1,5 @@
 var express = require ("express");
-var mongojs = require ("mongojs");
+// var mongojs = require ("mongojs");
 var mongoose = require ("mongoose");
 var cheerio = require ("cheerio");
 var axios = require ("axios");
@@ -17,7 +17,7 @@ var app = express();
 
 // Configure middleware
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -33,22 +33,24 @@ app.use(express.static("public"));
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("https://fivethirtyeight.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $("div.post-info").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
-        .children("a")
+        .children(".article-title")
         .text();
-      result.link = $(this)
+        result.link = $(this)
+        .children(".article-title")
         .children("a")
         .attr("href");
+        console.log(result);
 
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
