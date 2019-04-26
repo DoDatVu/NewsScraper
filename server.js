@@ -24,18 +24,36 @@ app.use(express.json());
 
 // Public static folder
 app.use(express.static("public"));
+// Set Handlebars.
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
+
+
 
 // Connect to the Mongo DB
 // mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
 // Routes
 
+
+app.get("/", function(req,res) {
+  res.render("index", {
+    title: "Home Page",
+    customcss: "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"></link>",
+    customjs: "<script type=\"text/javascript\" src=\"app.js\"></script>"
+  });
+});
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://fivethirtyeight.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
+
 
     // Now, we grab every h2 within an article tag, and do the following:
     $("div.post-info").each(function(i, element) {
@@ -123,4 +141,3 @@ app.post("/articles/:id", function(req, res) {
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
 });
-
